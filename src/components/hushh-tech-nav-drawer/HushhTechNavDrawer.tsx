@@ -97,7 +97,7 @@ const HushhTechNavDrawer: React.FC<HushhTechNavDrawerProps> = ({
     >
       <div
         ref={drawerRef}
-        className="w-full max-w-3xl max-h-[calc(100vh-5.5rem)] md:max-h-[calc(100vh-7.5rem)] overflow-hidden rounded-2xl border border-white/70 bg-white shadow-2xl flex flex-col animate-[menu-pop_280ms_ease-out]"
+        className="w-full max-w-3xl max-h-[calc(100vh-5.5rem)] md:max-h-[calc(100vh-7.5rem)] overflow-hidden rounded-2xl border border-white/70 bg-white shadow-2xl flex flex-col animate-scaleIn"
         role="dialog"
         aria-modal="true"
         aria-labelledby="hushh-nav-drawer-title"
@@ -118,6 +118,16 @@ const HushhTechNavDrawer: React.FC<HushhTechNavDrawerProps> = ({
             hushh technologies
           </span>
         </div>
+        <button
+          ref={closeButtonRef}
+          onClick={onClose}
+          className="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center hover:bg-gray-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-hushh-blue focus-visible:ring-offset-2"
+          aria-label="Close menu"
+        >
+          <span className="material-symbols-outlined text-gray-500 !text-[1.2rem]">
+            close
+          </span>
+        </button>
       </div>
 
       {/* ── Nav Links ── */}
@@ -253,18 +263,6 @@ const HushhTechNavDrawer: React.FC<HushhTechNavDrawerProps> = ({
           </div>
         </div>
       </div>
-      <style>{`
-        @keyframes menu-pop {
-          0% {
-            opacity: 0;
-            transform: translateY(-8px) scale(0.985);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
-        }
-      `}</style>
       </div>
     </div>
   );
