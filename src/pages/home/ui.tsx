@@ -121,15 +121,11 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  <div
-                    className="pt-4 border-t border-white/10 group-hover:border-gray-300 flex items-center justify-between cursor-pointer transition-colors duration-700"
+                  <button
+                    type="button"
+                    className="w-full pt-4 border-t border-white/10 group-hover:border-gray-300 flex items-center justify-between cursor-pointer bg-transparent text-left transition-colors duration-700"
                     onClick={() => onNavigate("/discover-fund-a")}
-                    role="button"
-                    tabIndex={0}
                     aria-label="View performance details"
-                    onKeyDown={(e) => {
-                      activateOnKeyboard(e, () => onNavigate("/discover-fund-a"));
-                    }}
                   >
                     <span className="text-xs font-medium tracking-wide uppercase text-hushh-blue">
                       Performance Details
@@ -137,7 +133,7 @@ export default function HomePage() {
                     <span className="material-symbols-outlined thin-icon text-sm text-hushh-blue group-hover:translate-x-1 transition-transform">
                       arrow_forward
                     </span>
-                  </div>
+                  </button>
                 </div>
               </div>
             </div>
@@ -195,152 +191,39 @@ export default function HomePage() {
                   className="text-2xl font-medium mb-8 tracking-tight font-serif sm:text-3xl"
                   style={playfair}
                 >
-                  {primaryCTA.text}
-                  <span className="material-symbols-outlined thin-icon text-lg">
-                    arrow_forward
-                  </span>
-                </HushhTechCta>
-                <HushhTechCta
-                  onClick={() => onNavigate("/discover-fund-a")}
-                  variant={HushhTechCtaVariant.WHITE}
-                >
-                  Discover Fund A
-                </HushhTechCta>
-              </div>
-
-              <div className="border-t border-b border-gray-100 py-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between lg:flex-col lg:items-start">
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined thin-icon text-lg text-ios-green">
-                    verified_user
-                  </span>
-                  <span className="text-[10px] font-medium tracking-widest uppercase text-gray-400">
-                    SEC Registered
-                  </span>
-                </div>
-                <div className="hidden sm:block w-1 h-1 bg-gray-300 rounded-full lg:hidden" />
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined thin-icon text-lg text-hushh-blue">
-                    lock
-                  </span>
-                  <span className="text-[10px] font-medium tracking-widest uppercase text-gray-400">
-                    Bank Level Security
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative mt-4 lg:mt-0 lg:col-span-8 xl:col-span-9">
-              <div className="bg-ios-dark text-white p-8 sm:p-10 lg:p-12 rounded-2xl relative overflow-hidden shadow-2xl">
-                <div className="absolute -top-10 -right-10 w-40 h-40 bg-hushh-blue/15 rounded-full blur-3xl" />
-                <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-hushh-blue/5 to-transparent" />
-
-                <div className="relative z-10 flex flex-col gap-6">
-                  <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                    <div>
-                      <span className="text-[10px] font-medium tracking-widest uppercase text-white/50 mb-1 block">
-                        Flagship Product
-                      </span>
-                      <h2
-                        className="text-3xl font-medium font-serif sm:text-4xl"
-                        style={playfair}
-                      >
-                        Fund A
-                      </h2>
-                    </div>
-                    <span className="self-start bg-hushh-blue/20 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-medium uppercase tracking-wider border border-hushh-blue/30 text-hushh-blue">
-                      High Growth
-                    </span>
-                  </div>
-
-                  <div className="space-y-4 my-2 sm:grid sm:grid-cols-2 sm:gap-8 sm:space-y-0">
-                    <div>
-                      <span className="text-xs text-white/50 block mb-1">
-                        Target Net IRR
-                      </span>
-                      <span
-                        className="text-[48px] font-serif font-light tracking-tighter text-ios-green leading-none sm:text-[56px]"
-                        style={playfair}
-                      >
-                        18-23%
-                      </span>
-                    </div>
-                    <div>
-                      <span className="text-xs text-white/50 block mb-1">
-                        Inception Year
-                      </span>
-                      <span
-                        className="font-serif text-[36px] leading-none sm:text-[44px]"
-                        style={playfair}
-                      >
-                        2024
-                      </span>
-                    </div>
-                  </div>
-
-                  <button
-                    type="button"
-                    className="w-full pt-4 border-t border-white/10 flex items-center justify-between group cursor-pointer bg-transparent text-left"
-                    onClick={() => onNavigate("/discover-fund-a")}
-                    aria-label="View performance details"
-                  >
-                    <span className="text-xs font-medium tracking-wide uppercase text-hushh-blue">
-                      Performance Details
-                    </span>
-                    <span className="material-symbols-outlined thin-icon text-sm text-hushh-blue group-hover:translate-x-1 transition-transform">
-                      arrow_forward
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section className="lg:grid lg:grid-cols-12 lg:gap-10 lg:items-start">
-            <div className="lg:col-span-7 xl:col-span-8">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-2 font-medium">
-                Why Hushh
-              </p>
-              <h2
-                className="text-2xl font-medium mb-8 tracking-tight font-serif sm:text-3xl"
-                style={playfair}
-              >
-                The Hushh Advantage
-              </h2>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
-                {[
-                  {
-                    icon: "analytics",
-                    color: "text-hushh-blue",
-                    bg: "bg-hushh-blue/10",
-                    title: "Data Driven",
-                    desc: "Decisions based on facts, not emotions.",
-                  },
-                  {
-                    icon: "savings",
-                    color: "text-ios-green",
-                    bg: "bg-ios-green/10",
-                    title: "Low Fees",
-                    desc: "More of your returns stay in your pocket.",
-                  },
-                  {
-                    icon: "workspace_premium",
-                    color: "text-ios-yellow",
-                    bg: "bg-ios-yellow/10",
-                    title: "Expert Vetted",
-                    desc: "Top-tier financial minds at work.",
-                  },
-                  {
-                    icon: "autorenew",
-                    color: "text-hushh-blue",
-                    bg: "bg-hushh-blue/10",
-                    title: "Automated",
-                    desc: "Set it and forget it peace of mind.",
-                  },
-                ].map((item) => (
-                  <div
-                    key={item.icon}
-                    className="flex flex-col items-center text-center gap-3"
-                  >
+                  The Hushh Advantage
+                </h2>
+                <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-4">
+                  {[
+                    {
+                      icon: "analytics",
+                      color: "text-hushh-blue",
+                      bg: "bg-hushh-blue/10",
+                      title: "Data Driven",
+                      desc: "Decisions based on facts, not emotions.",
+                    },
+                    {
+                      icon: "savings",
+                      color: "text-ios-green",
+                      bg: "bg-ios-green/10",
+                      title: "Low Fees",
+                      desc: "More of your returns stay in your pocket.",
+                    },
+                    {
+                      icon: "workspace_premium",
+                      color: "text-ios-yellow",
+                      bg: "bg-ios-yellow/10",
+                      title: "Expert Vetted",
+                      desc: "Top-tier financial minds at work.",
+                    },
+                    {
+                      icon: "autorenew",
+                      color: "text-hushh-blue",
+                      bg: "bg-hushh-blue/10",
+                      title: "Automated",
+                      desc: "Set it and forget it peace of mind.",
+                    },
+                  ].map((item) => (
                     <div
                       key={item.icon}
                       className="flex flex-col items-center text-center gap-3"
