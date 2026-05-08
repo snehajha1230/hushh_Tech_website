@@ -418,7 +418,7 @@ const FundA = () => {
                   </p>
                   <div className="w-full h-2.5 rounded-full bg-gray-200/80 overflow-hidden mb-2 shadow-inner">
                     <div
-                      className="relative h-full rounded-full bg-gradient-to-r from-hushh-blue to-[#4f8dff] transition-all duration-700"
+                      className="relative h-full rounded-full bg-gradient-to-r from-hushh-blue to-hushh-blue/70 transition-all duration-700"
                       style={{ width: `${getProgressWidth(row.value)}%` }}
                     >
                       <span className="absolute inset-0 opacity-60 bg-[linear-gradient(110deg,rgba(255,255,255,0)_0%,rgba(255,255,255,0.55)_45%,rgba(255,255,255,0)_70%)] animate-[pulse_2.4s_ease-in-out_infinite]" />
@@ -591,7 +591,9 @@ const FundA = () => {
       </main>
 
       {/* ═══ Footer Nav ═══ */}
-      <HushhTechFooter activeTab={HushhFooterTab.FUND_A} />
+      <div className="lg:hidden">
+        <HushhTechFooter activeTab={HushhFooterTab.FUND_A} />
+      </div>
     </div>
   );
 };
