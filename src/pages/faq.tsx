@@ -1,14 +1,9 @@
 import React from 'react';
-import {
-  Container,
-  Box,
-  Heading,
-  Text,
-  VStack,
-  Icon,
-  Flex,
-} from "@chakra-ui/react";
-import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
+import HushhTechHeader from '../components/hushh-tech-header/HushhTechHeader';
+import HushhTechFooter from '../components/hushh-tech-footer/HushhTechFooter';
+import LanguageSwitcher from '../components/LanguageSwitcher';
+
+const playfair = { fontFamily: "'Playfair Display', serif" };
 
 interface FaqItem {
   question: string;
@@ -78,85 +73,56 @@ const FaqPage: React.FC = () => {
   };
 
   return (
-    <Container maxW="container.xl" py={12} px={{ base: 4, md: 6 }}>
-      {/* Main Header */}
-      <Box textAlign="center" mb={16}>
-        <Heading 
-          as="h1" 
-          size={{ base: "2xl", md: "3xl" }} 
-          mb={4}
-          letterSpacing="tight"
-          // fontWeight="500"
-        >
-          <Text as="span" fontWeight="300" color="black">Frequently Asked </Text><br/>
-          <Text as="span" fontWeight="500" className="blue-gradient-text">Questions</Text>
-        </Heading>
-        
-        <Text 
-          fontSize={{ base: "lg", md: "xl" }} 
-          maxW="3xl" 
-          mx="auto" 
-          color="gray.600"
-          mt={4}
-        >
-          Find answers to common questions about our investment strategies, processes, and
-          services.
-        </Text>
-      </Box>
-
-      {/* FAQ Items */}
-      <VStack spacing={6} align="stretch" maxW="container.lg" mx="auto">
-        {faqs.map((faq, index: number) => (
-          <Box 
-            key={index}
-            bg="white" 
-            borderRadius="lg" 
-            boxShadow={openIndex === index ? "lg" : "md"}
-            transition="all 0.2s"
-            overflow="hidden"
-            borderWidth="1px"
-            borderColor="gray.200"
+    <div className="bg-white antialiased text-gray-900 min-h-screen flex flex-col selection:bg-hushh-blue selection:text-white">
+      <HushhTechHeader rightAccessory={<LanguageSwitcher variant="light" />} />
+      <main className="flex-1 w-full max-w-md mx-auto px-6 pb-28 pt-2 lg:max-w-7xl lg:px-10 xl:px-16 lg:pt-4 lg:pb-32">
+        <div className="text-center mb-8 lg:mb-10">
+          <h1
+            className="text-[2.5rem] leading-[1.1] font-normal text-black tracking-tight lg:text-[3.25rem] mb-4"
+            style={playfair}
           >
-            <Flex 
-              p={6}
-              cursor="pointer"
-              onClick={() => toggleAccordion(index)}
-              justify="space-between"
-              align="center"
+            Frequently Asked <br />
+            <span className="text-gray-400 italic font-light">Questions</span>
+          </h1>
+          <p className="text-gray-500 text-sm font-light mt-4 leading-relaxed max-w-3xl mx-auto lg:text-base">
+            Find answers to common questions about our investment strategies, processes, and
+            services.
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-4 max-w-3xl mx-auto">
+          {faqs.map((faq, index: number) => (
+            <div
+              key={index}
+              className={`rounded-2xl border bg-white overflow-hidden transition-all duration-200 ${
+                openIndex === index
+                  ? 'border-gray-300 shadow-lg'
+                  : 'border-gray-200/80 shadow-sm hover:border-hushh-blue/20'
+              }`}
             >
-              <Heading 
-                as="h3" 
-                size={{ base: "sm", md: "md" }} 
-                fontWeight="500"
-                color="gray.800"
+              <button
+                type="button"
+                onClick={() => toggleAccordion(index)}
+                className="w-full flex items-center justify-between gap-4 text-left p-5 md:p-6"
               >
-                {faq.question}
-              </Heading>
-              <Icon
-                as={openIndex === index ? ChevronUpIcon : ChevronDownIcon}
-                w={6}
-                h={6}
-                color="gray.500"
-                transition="transform 0.2s"
-              />
-            </Flex>
-            
-            {openIndex === index && (
-              <Box 
-                px={6} 
-                pb={6} 
-                pt={0}
-                color="gray.600"
-                fontSize={{ base: "md", md: "lg" }}
-                lineHeight="tall"
-              >
-                {faq.answer}
-              </Box>
-            )}
-          </Box>
-        ))}
-      </VStack>
-    </Container>
+                <h3 className="text-[13px] md:text-sm font-medium text-black leading-snug pr-2">
+                  {faq.question}
+                </h3>
+                <span className="material-symbols-outlined thin-icon text-xl text-gray-500 shrink-0">
+                  {openIndex === index ? 'expand_less' : 'expand_more'}
+                </span>
+              </button>
+              {openIndex === index && (
+                <div className="px-5 md:px-6 pb-5 md:pb-6 pt-0 text-gray-600 text-sm font-light leading-relaxed border-t border-gray-100">
+                  {faq.answer}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </main>
+      <HushhTechFooter />
+    </div>
   );
 };
 
