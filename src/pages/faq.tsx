@@ -70,6 +70,10 @@ const faqs: FaqItem[] = [
   }
 ];
 
+const playfair = "'Playfair Display', serif";
+const bodyFont =
+  '"Manrope", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+
 const FaqPage: React.FC = () => {
   const [openIndex, setOpenIndex] = React.useState<number | null>(0);
 
@@ -78,85 +82,145 @@ const FaqPage: React.FC = () => {
   };
 
   return (
-    <Container maxW="container.xl" py={12} px={{ base: 4, md: 6 }}>
-      {/* Main Header */}
-      <Box textAlign="center" mb={16}>
-        <Heading 
-          as="h1" 
-          size={{ base: "2xl", md: "3xl" }} 
-          mb={4}
-          letterSpacing="tight"
-          // fontWeight="500"
-        >
-          <Text as="span" fontWeight="300" color="black">Frequently Asked </Text><br/>
-          <Text as="span" fontWeight="500" className="blue-gradient-text">Questions</Text>
-        </Heading>
-        
-        <Text 
-          fontSize={{ base: "lg", md: "xl" }} 
-          maxW="3xl" 
-          mx="auto" 
-          color="gray.600"
-          mt={4}
-        >
-          Find answers to common questions about our investment strategies, processes, and
-          services.
-        </Text>
-      </Box>
-
-      {/* FAQ Items */}
-      <VStack spacing={6} align="stretch" maxW="container.lg" mx="auto">
-        {faqs.map((faq, index: number) => (
-          <Box 
-            key={index}
-            bg="white" 
-            borderRadius="lg" 
-            boxShadow={openIndex === index ? "lg" : "md"}
-            transition="all 0.2s"
-            overflow="hidden"
-            borderWidth="1px"
-            borderColor="gray.200"
+    <Box
+      bg="gray.50"
+      color="gray.900"
+      fontFamily={bodyFont}
+      sx={{ WebkitFontSmoothing: "antialiased", MozOsxFontSmoothing: "grayscale" }}
+    >
+      <Container maxW="7xl" py={{ base: 10, md: 14, lg: 16 }} px={{ base: 4, sm: 6, lg: 8 }}>
+        <Box textAlign="center" mb={{ base: 12, md: 14 }}>
+          <Heading
+            as="h1"
+            fontFamily={playfair}
+            fontWeight="normal"
+            fontSize={{ base: "2.75rem", sm: "3.25rem", lg: "4rem" }}
+            lineHeight="1.1"
+            letterSpacing="-0.02em"
+            color="black"
           >
-            <Flex 
-              p={6}
-              cursor="pointer"
-              onClick={() => toggleAccordion(index)}
-              justify="space-between"
-              align="center"
+            <Text as="span" display="block">
+              Frequently Asked
+            </Text>
+            <Text
+              as="span"
+              display="block"
+              color="gray.400"
+              fontStyle="italic"
+              fontWeight="300"
+              fontFamily={playfair}
             >
-              <Heading 
-                as="h3" 
-                size={{ base: "sm", md: "md" }} 
-                fontWeight="500"
-                color="gray.800"
+              Questions
+            </Text>
+          </Heading>
+
+          <Text
+            fontSize={{ base: "sm", sm: "md" }}
+            fontWeight="300"
+            maxW="lg"
+            mx="auto"
+            color="gray.500"
+            mt={4}
+            lineHeight="relaxed"
+          >
+            Find answers to common questions about our investment strategies, processes, and
+            services.
+          </Text>
+        </Box>
+
+        <VStack
+          spacing={{ base: 5, md: 6 }}
+          align="stretch"
+          maxW="4xl"
+          mx="auto"
+          w="100%"
+        >
+          {faqs.map((faq, index: number) => (
+            <Box
+              key={index}
+              bg="white"
+              borderRadius="2xl"
+              overflow="hidden"
+              borderWidth="1px"
+              borderColor="gray.100"
+              boxShadow={
+                openIndex === index
+                  ? "0 4px 24px rgba(0, 0, 0, 0.08)"
+                  : "0 2px 12px rgba(0, 0, 0, 0.06)"
+              }
+              transition="box-shadow 0.2s ease, border-color 0.2s ease"
+              _hover={{
+                borderColor: "gray.200",
+                boxShadow: "0 4px 20px rgba(0, 0, 0, 0.07)",
+              }}
+            >
+              <Flex
+                role="group"
+                px={{ base: 5, md: 6 }}
+                py={{ base: 5, md: 6 }}
+                cursor="pointer"
+                onClick={() => toggleAccordion(index)}
+                justify="space-between"
+                align="flex-start"
+                gap={4}
+                transition="background-color 0.2s ease, box-shadow 0.2s ease"
+                borderTopRadius="2xl"
+                _hover={{
+                  bg: "gray.50",
+                  boxShadow: "inset 0 0 0 1px rgba(0, 0, 0, 0.04)",
+                }}
+                _active={{
+                  bg: "gray.100",
+                }}
               >
-                {faq.question}
-              </Heading>
-              <Icon
-                as={openIndex === index ? ChevronUpIcon : ChevronDownIcon}
-                w={6}
-                h={6}
-                color="gray.500"
-                transition="transform 0.2s"
-              />
-            </Flex>
-            
-            {openIndex === index && (
-              <Box 
-                px={6} 
-                pb={6} 
-                pt={0}
-                color="gray.600"
-                fontSize={{ base: "md", md: "lg" }}
-                lineHeight="tall"
-              >
-                {faq.answer}
-              </Box>
-            )}
-          </Box>
-        ))}
-      </VStack>
-    </Container>
+                <Heading
+                  as="h3"
+                  fontFamily={bodyFont}
+                  fontSize={{ base: "0.95rem", md: "1rem" }}
+                  fontWeight="600"
+                  color="gray.900"
+                  lineHeight="snug"
+                  pr={1}
+                  transition="color 0.2s ease"
+                  _groupHover={{ color: "black" }}
+                >
+                  {faq.question}
+                </Heading>
+                <Icon
+                  as={openIndex === index ? ChevronUpIcon : ChevronDownIcon}
+                  w={5}
+                  h={5}
+                  mt={0.5}
+                  flexShrink={0}
+                  color="gray.400"
+                  transition="color 0.2s ease, transform 0.2s ease"
+                  _groupHover={{
+                    color: "gray.600",
+                    transform: openIndex === index ? "translateY(-1px)" : "translateY(2px)",
+                  }}
+                />
+              </Flex>
+
+              {openIndex === index && (
+                <Box
+                  px={{ base: 5, md: 6 }}
+                  pb={{ base: 5, md: 6 }}
+                  pt={4}
+                  borderTopWidth="1px"
+                  borderTopColor="gray.100"
+                  color="gray.600"
+                  fontSize={{ base: "0.9375rem", md: "1rem" }}
+                  fontWeight="400"
+                  lineHeight="tall"
+                >
+                  {faq.answer}
+                </Box>
+              )}
+            </Box>
+          ))}
+        </VStack>
+      </Container>
+    </Box>
   );
 };
 
