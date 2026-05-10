@@ -55,6 +55,7 @@ const fieldChrome = {
 };
 
 const cardHoverBorder = "rgba(0, 102, 204, 0.3)";
+const MESSAGE_MAX_LENGTH = 2000;
 
 const reasonOptions = [
   "Infrastructure Consultation",
@@ -335,11 +336,15 @@ export default function Contact() {
                     placeholder="Tell us how we can help you..."
                     value={formData.message}
                     onChange={handleChange}
+                    maxLength={MESSAGE_MAX_LENGTH}
                     size="md"
                     minH="120px"
                     rows={4}
                     {...fieldChrome}
                   />
+                  <Text fontSize="xs" color={gray500} mt={1.5} textAlign="right">
+                    {MESSAGE_MAX_LENGTH - formData.message.length} characters remaining
+                  </Text>
                 </FormControl>
 
                 <FormControl isRequired>
