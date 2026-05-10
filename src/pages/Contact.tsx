@@ -32,7 +32,6 @@ const gray50 = "#F9FAFB";
 const gray100 = "#F3F4F6";
 const gray200 = "#E5E7EB";
 const gray300 = "#D1D5DB";
-const gray400 = "#9CA3AF";
 const gray500 = "#6B7280";
 const gray900 = "#111827";
 
@@ -50,7 +49,7 @@ const fieldChrome = {
   borderColor: gray200,
   bg: gray50,
   color: gray900,
-  _placeholder: { color: gray400 },
+  _placeholder: { color: gray500 },
   _hover: { borderColor: gray300 },
   _focusVisible: inputFocus,
 };
@@ -172,7 +171,7 @@ export default function Contact() {
               as="span"
               fontWeight="300"
               fontStyle="italic"
-              color={gray400}
+              color={gray500}
             >
               Touch
             </Text>
@@ -246,7 +245,7 @@ export default function Contact() {
             <form ref={form} onSubmit={handleSubmit}>
               <VStack spacing={5} align="stretch">
                 <FormControl isRequired>
-                  <FormLabel fontWeight="500" fontSize="sm" color={gray400} mb={1.5}>
+                  <FormLabel fontWeight="500" fontSize="sm" color={gray500} mb={1.5}>
                     Full Name
                   </FormLabel>
                   <Input
@@ -261,7 +260,7 @@ export default function Contact() {
                 </FormControl>
 
                 <FormControl>
-                  <FormLabel fontWeight="500" fontSize="sm" color={gray400} mb={1.5}>
+                  <FormLabel fontWeight="500" fontSize="sm" color={gray500} mb={1.5}>
                     Company
                   </FormLabel>
                   <Input
@@ -276,7 +275,7 @@ export default function Contact() {
                 </FormControl>
 
                 <FormControl isRequired>
-                  <FormLabel fontWeight="500" fontSize="sm" color={gray400} mb={1.5}>
+                  <FormLabel fontWeight="500" fontSize="sm" color={gray500} mb={1.5}>
                     Email Address
                   </FormLabel>
                   <Input
@@ -292,7 +291,7 @@ export default function Contact() {
                 </FormControl>
 
                 <FormControl>
-                  <FormLabel fontWeight="500" fontSize="sm" color={gray400} mb={1.5}>
+                  <FormLabel fontWeight="500" fontSize="sm" color={gray500} mb={1.5}>
                     Phone Number
                   </FormLabel>
                   <Input
@@ -307,7 +306,7 @@ export default function Contact() {
                 </FormControl>
 
                 <FormControl isRequired>
-                  <FormLabel fontWeight="500" fontSize="sm" color={gray400} mb={1.5}>
+                  <FormLabel fontWeight="500" fontSize="sm" color={gray500} mb={1.5}>
                     Reason for Contact
                   </FormLabel>
                   <Select
@@ -328,7 +327,7 @@ export default function Contact() {
                 </FormControl>
 
                 <FormControl isRequired>
-                  <FormLabel fontWeight="500" fontSize="sm" color={gray400} mb={1.5}>
+                  <FormLabel fontWeight="500" fontSize="sm" color={gray500} mb={1.5}>
                     Message
                   </FormLabel>
                   <Textarea
@@ -344,7 +343,7 @@ export default function Contact() {
                 </FormControl>
 
                 <FormControl isRequired>
-                  <FormLabel fontWeight="500" fontSize="sm" color={gray400} mb={1.5}>
+                  <FormLabel fontWeight="500" fontSize="sm" color={gray500} mb={1.5}>
                     What is the sum of {num1} and {num2}?
                   </FormLabel>
                   <Input
