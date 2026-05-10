@@ -6,7 +6,6 @@ import {
   Text,
   VStack,
   Icon,
-  Flex,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 
@@ -135,7 +134,12 @@ const FaqPage: React.FC = () => {
           mx="auto"
           w="100%"
         >
-          {faqs.map((faq, index: number) => (
+          {faqs.map((faq, index: number) => {
+            const isOpen = openIndex === index;
+            const panelId = `faq-panel-${index}`;
+            const triggerId = `faq-trigger-${index}`;
+
+            return (
             <Box
               key={index}
               bg="white"
@@ -144,7 +148,7 @@ const FaqPage: React.FC = () => {
               borderWidth="1px"
               borderColor="gray.100"
               boxShadow={
-                openIndex === index
+                isOpen
                   ? "0 4px 24px rgba(0, 0, 0, 0.08)"
                   : "0 2px 12px rgba(0, 0, 0, 0.06)"
               }
@@ -154,55 +158,83 @@ const FaqPage: React.FC = () => {
                 boxShadow: "0 4px 20px rgba(0, 0, 0, 0.07)",
               }}
             >
-              <Flex
-                role="group"
-                px={{ base: 5, md: 6 }}
-                py={{ base: 5, md: 6 }}
-                cursor="pointer"
-                onClick={() => toggleAccordion(index)}
-                justify="space-between"
-                align="flex-start"
-                gap={4}
-                transition="background-color 0.2s ease, box-shadow 0.2s ease"
-                borderTopRadius="2xl"
-                _hover={{
-                  bg: "gray.50",
-                  boxShadow: "inset 0 0 0 1px rgba(0, 0, 0, 0.04)",
-                }}
-                _active={{
-                  bg: "gray.100",
-                }}
+              <Heading
+                as="h3"
+                m={0}
+                fontFamily={bodyFont}
+                fontSize={{ base: "0.95rem", md: "1rem" }}
+                fontWeight="600"
+                lineHeight="snug"
               >
-                <Heading
-                  as="h3"
-                  fontFamily={bodyFont}
-                  fontSize={{ base: "0.95rem", md: "1rem" }}
-                  fontWeight="600"
-                  color="gray.900"
-                  lineHeight="snug"
-                  pr={1}
-                  transition="color 0.2s ease"
-                  _groupHover={{ color: "black" }}
-                >
-                  {faq.question}
-                </Heading>
-                <Icon
-                  as={openIndex === index ? ChevronUpIcon : ChevronDownIcon}
-                  w={5}
-                  h={5}
-                  mt={0.5}
-                  flexShrink={0}
-                  color="gray.400"
-                  transition="color 0.2s ease, transform 0.2s ease"
-                  _groupHover={{
-                    color: "gray.600",
-                    transform: openIndex === index ? "translateY(-1px)" : "translateY(2px)",
-                  }}
-                />
-              </Flex>
+                <Box role="group" w="100%">
+                  <Box
+                    as="button"
+                    type="button"
+                    id={triggerId}
+                    aria-expanded={isOpen}
+                    aria-controls={panelId}
+                    onClick={() => toggleAccordion(index)}
+                    display="flex"
+                    w="100%"
+                    alignItems="flex-start"
+                    justifyContent="space-between"
+                    gap={4}
+                    px={{ base: 5, md: 6 }}
+                    py={{ base: 5, md: 6 }}
+                    cursor="pointer"
+                    border="none"
+                    bg="transparent"
+                    borderTopRadius="2xl"
+                    textAlign="left"
+                    font="inherit"
+                    color="gray.900"
+                    transition="background-color 0.2s ease, box-shadow 0.2s ease"
+                    _hover={{
+                      bg: "gray.50",
+                      boxShadow: "inset 0 0 0 1px rgba(0, 0, 0, 0.04)",
+                    }}
+                    _active={{
+                      bg: "gray.100",
+                    }}
+                    _focus={{ outline: "none" }}
+                    _focusVisible={{
+                      boxShadow:
+                        "inset 0 0 0 1px rgba(0, 0, 0, 0.04), 0 0 0 3px rgba(0, 169, 224, 0.45)",
+                    }}
+                  >
+                    <Box
+                      as="span"
+                      display="block"
+                      flex="1"
+                      pr={1}
+                      transition="color 0.2s ease"
+                      _groupHover={{ color: "black" }}
+                    >
+                      {faq.question}
+                    </Box>
+                    <Icon
+                      as={isOpen ? ChevronUpIcon : ChevronDownIcon}
+                      aria-hidden
+                      w={5}
+                      h={5}
+                      mt={0.5}
+                      flexShrink={0}
+                      color="gray.400"
+                      transition="color 0.2s ease, transform 0.2s ease"
+                      _groupHover={{
+                        color: "gray.600",
+                        transform: isOpen ? "translateY(-1px)" : "translateY(2px)",
+                      }}
+                    />
+                  </Box>
+                </Box>
+              </Heading>
 
-              {openIndex === index && (
+              {isOpen && (
                 <Box
+                  id={panelId}
+                  role="region"
+                  aria-labelledby={triggerId}
                   px={{ base: 5, md: 6 }}
                   pb={{ base: 5, md: 6 }}
                   pt={4}
@@ -217,7 +249,8 @@ const FaqPage: React.FC = () => {
                 </Box>
               )}
             </Box>
-          ))}
+            );
+          })}
         </VStack>
       </Container>
     </Box>
