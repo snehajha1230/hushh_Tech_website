@@ -8,6 +8,9 @@ const quickLinks = [
   { label: 'Contact', to: '/contact' },
 ];
 
+const focusLinkClass =
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-hushh-blue focus-visible:ring-offset-2 focus-visible:ring-offset-black';
+
 export default function NotFound() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-black text-white">
@@ -44,19 +47,19 @@ export default function NotFound() {
             <div className="mt-10 flex flex-col gap-4 sm:flex-row">
               <Link
                 to="/"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition hover:bg-gray-100"
+                className={`inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition hover:bg-gray-100 ${focusLinkClass}`}
               >
                 <span>Back to Home</span>
-                <span className="material-symbols-outlined text-base">
+                <span className="material-symbols-outlined text-base" aria-hidden>
                   arrow_forward
                 </span>
               </Link>
               <Link
                 to="/contact"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/10"
+                className={`inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/10 ${focusLinkClass}`}
               >
                 <span>Contact Hushh</span>
-                <span className="material-symbols-outlined text-base">
+                <span className="material-symbols-outlined text-base" aria-hidden>
                   support_agent
                 </span>
               </Link>
@@ -77,10 +80,10 @@ export default function NotFound() {
                     <Link
                       key={link.to}
                       to={link.to}
-                      className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/80 transition hover:border-hushh-blue/50 hover:bg-hushh-blue/10 hover:text-white"
+                      className={`flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/80 transition hover:border-hushh-blue/50 hover:bg-hushh-blue/10 hover:text-white ${focusLinkClass}`}
                     >
                       <span>{link.label}</span>
-                      <span className="material-symbols-outlined text-base">
+                      <span className="material-symbols-outlined text-base" aria-hidden>
                         north_east
                       </span>
                     </Link>
