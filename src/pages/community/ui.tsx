@@ -79,27 +79,38 @@ export default function CommunityPage() {
             <div className="border border-gray-200/70 rounded-3xl bg-gradient-to-b from-white to-ios-gray-bg p-5 lg:p-6">
               {/* ── Search ── */}
               <section className="mb-4">
+                <label htmlFor="community-search" className="sr-only">
+                  Search community articles
+                </label>
                 <div className="relative">
-                  <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 !text-[1.15rem]">
+                  <span
+                    aria-hidden="true"
+                    className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 !text-[1.15rem]"
+                  >
                     search
                   </span>
                   <input
-                    type="text"
+                    id="community-search"
+                    type="search"
                     placeholder="Search articles..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full h-12 pl-12 pr-4 rounded-2xl border border-gray-200 bg-white text-[13px] text-black placeholder:text-gray-400 font-light focus:outline-none focus:border-hushh-blue transition-colors"
+                    className="w-full h-12 pl-12 pr-4 rounded-2xl border border-gray-200 bg-white text-[13px] text-black placeholder:text-gray-400 font-light focus:outline-none focus:border-hushh-blue focus-visible:ring-2 focus-visible:ring-hushh-blue focus-visible:ring-offset-2 transition-colors"
                   />
                 </div>
               </section>
 
               {/* ── Category Filter ── */}
               <section>
+                <label htmlFor="community-category" className="sr-only">
+                  Filter community articles by category
+                </label>
                 <div className="relative">
                   <select
+                    id="community-category"
                     value={selectedCategory}
                     onChange={(e) => onCategoryChange(e.target.value)}
-                    className="w-full h-12 px-4 rounded-2xl border border-gray-200 bg-white text-[13px] text-black font-light appearance-none focus:outline-none focus:border-hushh-blue transition-colors cursor-pointer"
+                    className="w-full h-12 px-4 rounded-2xl border border-gray-200 bg-white text-[13px] text-black font-light appearance-none focus:outline-none focus:border-hushh-blue focus-visible:ring-2 focus-visible:ring-hushh-blue focus-visible:ring-offset-2 transition-colors cursor-pointer"
                   >
                     {dropdownOptions.map((opt) => (
                       <option key={opt} value={opt}>
@@ -107,7 +118,10 @@ export default function CommunityPage() {
                       </option>
                     ))}
                   </select>
-                  <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 !text-[1.15rem] pointer-events-none">
+                  <span
+                    aria-hidden="true"
+                    className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 !text-[1.15rem] pointer-events-none"
+                  >
                     expand_more
                   </span>
                 </div>
@@ -118,8 +132,16 @@ export default function CommunityPage() {
 
         {/* ── Post List ── */}
         {apiLoading ? (
-          <div className="flex justify-center py-16">
-            <div className="w-8 h-8 border-2 border-gray-200 border-t-hushh-blue rounded-full animate-spin" />
+          <div
+            className="flex justify-center py-16"
+            role="status"
+            aria-live="polite"
+          >
+            <div
+              aria-hidden="true"
+              className="w-8 h-8 border-2 border-gray-200 border-t-hushh-blue rounded-full animate-spin"
+            />
+            <span className="sr-only">Loading community articles</span>
           </div>
         ) : filteredContent.length > 0 ? (
           <div className="space-y-0 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-5">
