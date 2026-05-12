@@ -186,18 +186,31 @@ const DocumentViewerPage: React.FC = () => {
             download
             className="inline-flex items-center gap-2 rounded-xl bg-black px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-black/80"
           >
-            <span className="material-symbols-outlined text-base">download</span>
+            <span className="material-symbols-outlined text-base" aria-hidden="true">
+              download
+            </span>
             Download Original
           </a>
         </div>
 
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_18px_60px_rgba(15,23,42,0.06)]">
           {isLoading ? (
-            <div className="flex min-h-[240px] items-center justify-center">
-              <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-300 border-t-slate-900" />
+            <div
+              className="flex min-h-[240px] items-center justify-center"
+              role="status"
+              aria-live="polite"
+            >
+              <div
+                className="h-8 w-8 animate-spin rounded-full border-2 border-slate-300 border-t-slate-900"
+                aria-hidden="true"
+              />
+              <span className="sr-only">Loading document</span>
             </div>
           ) : error ? (
-            <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+            <div
+              className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+              role="alert"
+            >
               {error}
             </div>
           ) : (
