@@ -180,7 +180,8 @@ const DocumentViewerPage: React.FC = () => {
     };
   }, [documentUrl]);
 
-  const canDownload = Boolean(documentUrl) && !isLoading && !error;
+  const hasDocumentUrl = Boolean(documentUrl);
+  const canDownload = hasDocumentUrl && !isLoading && !error;
 
   return (
     <div className="min-h-screen bg-[#f7f7f5] text-slate-900">
@@ -192,8 +193,8 @@ const DocumentViewerPage: React.FC = () => {
             <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">{title}</h1>
           </div>
           <a
-            href={canDownload ? documentUrl : undefined}
-            download={canDownload ? '' : undefined}
+            href={hasDocumentUrl ? documentUrl : undefined}
+            {...(hasDocumentUrl ? { download: '' } : {})}
             aria-disabled={!canDownload}
             tabIndex={canDownload ? 0 : -1}
             className={`${downloadLinkClass}${canDownload ? '' : ' pointer-events-none opacity-50'}`}
