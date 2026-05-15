@@ -95,12 +95,14 @@ const JobDetails = () => {
           </HStack>
         </Flex>
 
-        <Button 
+        <Button
           colorScheme="cyan"
           size="lg"
           color="white"
           onClick={() => setShowForm(true)}
           mt={4}
+          aria-haspopup="dialog"
+          aria-expanded={showForm}
         >
           Apply Now
         </Button>

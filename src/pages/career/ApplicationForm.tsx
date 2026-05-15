@@ -1,10 +1,22 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import {
   Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton,
   FormControl, FormLabel, Input, Button, VStack, Text, useToast, Box, Select
 } from '@chakra-ui/react';
+import { useModalKeyboardNavigation } from '../../hooks/useModalKeyboardNavigation';
+
+const APPLICATION_FORM_TITLE_ID = 'career-application-form-title';
+const RESUME_LINK_HINT_ID = 'career-application-resume-hint';
+const PHONE_INPUT_ID = 'career-application-phone';
+
+const fieldFocusVisible = {
+  _focusVisible: {
+    borderColor: 'cyan.400',
+    boxShadow: '0 0 0 1px var(--chakra-colors-cyan-400)',
+  },
+};
 
 interface ApplicationFormProps {
   jobTitle: string;
@@ -38,6 +50,8 @@ const ApplicationForm = ({ jobTitle, jobLocation, onClose }: ApplicationFormProp
   const [formData, setFormData] = useState<ApplicationFormState>(initialState);
   const [loading, setLoading] = useState(false);
   const toast = useToast();
+  const modalContentRef = useRef<HTMLDivElement>(null);
+  const firstNameInputRef = useRef<HTMLInputElement>(null);
 
   const allowedCollegeValues = useMemo(
     () => new Set(ALLOWED_COLLEGES.map(({ value }) => value)), []
@@ -53,8 +67,16 @@ const ApplicationForm = ({ jobTitle, jobLocation, onClose }: ApplicationFormProp
     try { new URL(url); return true; } catch { return false; }
   };
 
+  useModalKeyboardNavigation({
+    isOpen: true,
+    containerRef: modalContentRef,
+    initialFocusRef: firstNameInputRef,
+    onClose,
+  });
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading) return;
     setLoading(true);
 
     try {
@@ -126,32 +148,77 @@ const ApplicationForm = ({ jobTitle, jobLocation, onClose }: ApplicationFormProp
   };
 
   return (
-    <Modal isOpen={true} onClose={onClose} size="lg" isCentered>
+    <Modal
+      isOpen
+      onClose={onClose}
+      size="lg"
+      isCentered
+      trapFocus={false}
+      autoFocus={false}
+      returnFocusOnClose={false}
+    >
       <ModalOverlay bg="blackAlpha.700" />
-      <ModalContent borderRadius="lg" mx={4}>
-        <ModalHeader fontSize="xl">Apply for {jobTitle}</ModalHeader>
-        <ModalCloseButton />
+      <ModalContent
+        ref={modalContentRef}
+        borderRadius="lg"
+        mx={4}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={APPLICATION_FORM_TITLE_ID}
+        tabIndex={-1}
+      >
+        <ModalHeader id={APPLICATION_FORM_TITLE_ID} fontSize="xl">
+          Apply for {jobTitle}
+        </ModalHeader>
+        <ModalCloseButton aria-label="Close application form" />
         <ModalBody pb={6}>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} aria-busy={loading}>
             <VStack spacing={4} align="stretch">
               <FormControl isRequired>
-                <FormLabel>First Name</FormLabel>
-                <Input value={formData.firstName} onChange={(e)=>updateFormField('firstName', e.target.value)} />
+                <FormLabel htmlFor="career-application-first-name">First Name</FormLabel>
+                <Input
+                  ref={firstNameInputRef}
+                  id="career-application-first-name"
+                  value={formData.firstName}
+                  onChange={(e) => updateFormField('firstName', e.target.value)}
+                  isDisabled={loading}
+                  {...fieldFocusVisible}
+                />
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel>Last Name</FormLabel>
-                <Input value={formData.lastName} onChange={(e)=>updateFormField('lastName', e.target.value)} />
+                <FormLabel htmlFor="career-application-last-name">Last Name</FormLabel>
+                <Input
+                  id="career-application-last-name"
+                  value={formData.lastName}
+                  onChange={(e) => updateFormField('lastName', e.target.value)}
+                  isDisabled={loading}
+                  {...fieldFocusVisible}
+                />
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel>Email</FormLabel>
-                <Input type="email" value={formData.email} onChange={(e)=>updateFormField('email', e.target.value)} />
+                <FormLabel htmlFor="career-application-email">Email</FormLabel>
+                <Input
+                  id="career-application-email"
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => updateFormField('email', e.target.value)}
+                  isDisabled={loading}
+                  {...fieldFocusVisible}
+                />
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel>College Email</FormLabel>
-                <Input type="email" value={formData.collegeEmail} onChange={(e)=>updateFormField('collegeEmail', e.target.value)} />
+                <FormLabel htmlFor="career-application-college-email">College Email</FormLabel>
+                <Input
+                  id="career-application-college-email"
+                  type="email"
+                  value={formData.collegeEmail}
+                  onChange={(e) => updateFormField('collegeEmail', e.target.value)}
+                  isDisabled={loading}
+                  {...fieldFocusVisible}
+                />
               </FormControl>
 
               {/* <FormControl isRequired>
@@ -160,25 +227,38 @@ const ApplicationForm = ({ jobTitle, jobLocation, onClose }: ApplicationFormProp
               </FormControl> */}
 
               <FormControl isRequired>
-                <FormLabel>Phone Number</FormLabel>
+                <FormLabel htmlFor={PHONE_INPUT_ID}>Phone Number</FormLabel>
                 <Box borderWidth="1px" borderColor="gray.200" borderRadius="md" p={1}>
                   <PhoneInput
                     country="us"
                     value={formData.phone}
-                    onChange={(phone)=>updateFormField('phone', phone)}
-                    inputStyle={{ width:'100%', border:'none', outline:'none' }}
-                    buttonStyle={{ border:'none', background:'none' }}
+                    onChange={(phone) => updateFormField('phone', phone)}
+                    disabled={loading}
+                    inputProps={{
+                      id: PHONE_INPUT_ID,
+                      name: 'phone',
+                      required: true,
+                      'aria-required': true,
+                    }}
+                    buttonProps={{
+                      'aria-label': 'Select country code',
+                    }}
+                    inputStyle={{ width: '100%', border: 'none', outline: 'none' }}
+                    buttonStyle={{ border: 'none', background: 'none' }}
                   />
                 </Box>
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel>College</FormLabel>
+                <FormLabel htmlFor="career-application-college">College</FormLabel>
                 <Select
+                  id="career-application-college"
                   placeholder="Select your college"
                   value={formData.college}
-                  onChange={(e)=>updateFormField('college', e.target.value)}
+                  onChange={(e) => updateFormField('college', e.target.value)}
                   focusBorderColor="cyan.400"
+                  isDisabled={loading}
+                  {...fieldFocusVisible}
                 >
                   {ALLOWED_COLLEGES.map(({ value, label }) => (
                     <option key={value} value={value}>{label}</option>
@@ -187,17 +267,34 @@ const ApplicationForm = ({ jobTitle, jobLocation, onClose }: ApplicationFormProp
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel>Resume Link</FormLabel>
+                <FormLabel htmlFor="career-application-resume-link">Resume Link</FormLabel>
                 <Input
+                  id="career-application-resume-link"
                   type="url"
                   value={formData.resumeLink}
-                  onChange={(e)=>updateFormField('resumeLink', e.target.value)}
+                  onChange={(e) => updateFormField('resumeLink', e.target.value)}
                   placeholder="https://drive.google.com/your-resume-link"
+                  aria-describedby={RESUME_LINK_HINT_ID}
+                  isDisabled={loading}
+                  {...fieldFocusVisible}
                 />
-                <Text fontSize="sm" color="gray.500" mt={1}>Please provide a public link to your resume</Text>
+                <Text id={RESUME_LINK_HINT_ID} fontSize="sm" color="gray.500" mt={1}>
+                  Please provide a public link to your resume
+                </Text>
               </FormControl>
 
-              <Button type="submit" colorScheme="cyan" size="lg" isLoading={loading} w="100%" mt={4}>
+              <Button
+                type="submit"
+                colorScheme="cyan"
+                size="lg"
+                isLoading={loading}
+                isDisabled={loading}
+                loadingText="Submitting..."
+                aria-busy={loading}
+                w="100%"
+                mt={4}
+                {...fieldFocusVisible}
+              >
                 Submit Application
               </Button>
             </VStack>
