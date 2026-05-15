@@ -118,6 +118,14 @@ function parseDocxDocument(xml: string): DocumentBlock[] {
   return blocks;
 }
 
+const downloadLinkClass =
+  'inline-flex items-center gap-2 rounded-xl bg-black px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-black/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/50 focus-visible:ring-offset-2';
+
+const tableHeaderCellClass =
+  'whitespace-pre-wrap px-4 py-3 text-left text-sm font-semibold text-slate-900';
+
+const tableBodyCellClass = 'whitespace-pre-wrap px-4 py-3 text-slate-700';
+
 const DocumentViewerPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const [blocks, setBlocks] = useState<DocumentBlock[]>([]);
@@ -172,19 +180,28 @@ const DocumentViewerPage: React.FC = () => {
     };
   }, [documentUrl]);
 
+  const canDownload = Boolean(documentUrl) && !isLoading && !error;
+
   return (
     <div className="min-h-screen bg-[#f7f7f5] text-slate-900">
       <HushhTechHeader />
-      <main className="mx-auto max-w-4xl px-6 pb-16 pt-10">
+      <main id="main-content" className="mx-auto max-w-4xl px-6 pb-16 pt-10">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
           <div>
             <p className="text-[11px] uppercase tracking-[0.22em] text-slate-500">Document Reader</p>
             <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">{title}</h1>
           </div>
           <a
-            href={documentUrl}
-            download
-            className="inline-flex items-center gap-2 rounded-xl bg-black px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-black/80"
+            href={canDownload ? documentUrl : undefined}
+            download={canDownload ? '' : undefined}
+            aria-disabled={!canDownload}
+            tabIndex={canDownload ? 0 : -1}
+            className={`${downloadLinkClass}${canDownload ? '' : ' pointer-events-none opacity-50'}`}
+            onClick={(event) => {
+              if (!canDownload) {
+                event.preventDefault();
+              }
+            }}
           >
             <span aria-hidden="true" className="material-symbols-outlined text-base">
               download
@@ -235,20 +252,52 @@ const DocumentViewerPage: React.FC = () => {
                 }
 
                 if (block.type === 'table') {
+                  const [headerRow, ...bodyRows] = block.rows;
+                  const tableCaptionId = `document-table-caption-${index}`;
+
                   return (
-                    <div key={`${block.type}-${index}`} className="overflow-x-auto rounded-2xl border border-slate-200">
-                      <table className="min-w-full divide-y divide-slate-200 text-sm">
-                        <tbody className="divide-y divide-slate-100">
-                          {block.rows.map((row, rowIndex) => (
-                            <tr key={`row-${rowIndex}`} className="align-top">
-                              {row.map((cell, cellIndex) => (
-                                <td key={`cell-${rowIndex}-${cellIndex}`} className="whitespace-pre-wrap px-4 py-3 text-slate-700">
+                    <div
+                      key={`${block.type}-${index}`}
+                      className="overflow-x-auto rounded-2xl border border-slate-200"
+                    >
+                      <table
+                        className="min-w-full divide-y divide-slate-200 text-sm"
+                        aria-describedby={tableCaptionId}
+                      >
+                        <caption id={tableCaptionId} className="sr-only">
+                          Table {index + 1} in {title}
+                        </caption>
+                        {headerRow && (
+                          <thead className="divide-y divide-slate-200 bg-slate-50">
+                            <tr className="align-top">
+                              {headerRow.map((cell, cellIndex) => (
+                                <th
+                                  key={`header-${cellIndex}`}
+                                  scope="col"
+                                  className={tableHeaderCellClass}
+                                >
                                   {cell}
-                                </td>
+                                </th>
                               ))}
                             </tr>
-                          ))}
-                        </tbody>
+                          </thead>
+                        )}
+                        {bodyRows.length > 0 && (
+                          <tbody className="divide-y divide-slate-100">
+                            {bodyRows.map((row, rowIndex) => (
+                              <tr key={`row-${rowIndex}`} className="align-top">
+                                {row.map((cell, cellIndex) => (
+                                  <td
+                                    key={`cell-${rowIndex}-${cellIndex}`}
+                                    className={tableBodyCellClass}
+                                  >
+                                    {cell}
+                                  </td>
+                                ))}
+                              </tr>
+                            ))}
+                          </tbody>
+                        )}
                       </table>
                     </div>
                   );
