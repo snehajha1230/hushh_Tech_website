@@ -88,6 +88,21 @@ const FAQ_DATA: FaqCategory[] = [
   },
 ];
 
+/** Stable DOM ids for accordion trigger/panel pairs. */
+function faqItemIds(key: string) {
+  const slug = key.replace(/[^a-zA-Z0-9-]/g, "-").toLowerCase();
+  return {
+    triggerId: `hushh-tech-faq-trigger-${slug}`,
+    panelId: `hushh-tech-faq-panel-${slug}`,
+  };
+}
+
+const accordionTriggerClass =
+  "w-full flex items-center gap-3 px-4 py-4 text-left hover:bg-gray-50 transition-colors rounded-sm focus:outline-none focus-visible:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.04),0_0_0_3px_rgba(0,169,224,0.45)]";
+
+const iconButtonFocusClass =
+  "focus:outline-none focus-visible:shadow-[0_0_0_3px_rgba(0,169,224,0.45)]";
+
 /* ── Props ── */
 interface HushhTechFaqSheetProps {
   isOpen: boolean;
@@ -183,13 +198,15 @@ const HushhTechFaqSheet: React.FC<HushhTechFaqSheetProps> = ({
           </h2>
           <button
             ref={closeButtonRef}
+            type="button"
             onClick={handleBackdropClick}
-            className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors"
+            className={`w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors ${iconButtonFocusClass}`}
             aria-label="Close FAQs"
           >
             <span
               className="material-symbols-outlined text-gray-600 text-lg"
               style={{ fontVariationSettings: "'wght' 400" }}
+              aria-hidden
             >
               close
             </span>
@@ -209,19 +226,24 @@ const HushhTechFaqSheet: React.FC<HushhTechFaqSheetProps> = ({
                 {category.items.map((item, idx) => {
                   const key = `${category.title}-${idx}`;
                   const isExpanded = expandedIdx === key;
+                  const { triggerId, panelId } = faqItemIds(key);
 
                   return (
                     <div key={key}>
                       {/* Question row */}
                       <button
+                        type="button"
+                        id={triggerId}
                         onClick={() => handleToggle(key)}
-                        className="w-full flex items-center gap-3 px-4 py-4 text-left hover:bg-gray-50 transition-colors"
+                        className={accordionTriggerClass}
                         aria-expanded={isExpanded}
+                        aria-controls={panelId}
                       >
                         <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center shrink-0">
                           <span
                             className="material-symbols-outlined text-gray-600 text-sm"
                             style={{ fontVariationSettings: "'wght' 300" }}
+                            aria-hidden
                           >
                             help
                           </span>
@@ -234,6 +256,7 @@ const HushhTechFaqSheet: React.FC<HushhTechFaqSheetProps> = ({
                             isExpanded ? "rotate-180" : ""
                           }`}
                           style={{ fontVariationSettings: "'wght' 300" }}
+                          aria-hidden
                         >
                           expand_more
                         </span>
@@ -241,6 +264,10 @@ const HushhTechFaqSheet: React.FC<HushhTechFaqSheetProps> = ({
 
                       {/* Answer — animated */}
                       <div
+                        id={panelId}
+                        role="region"
+                        aria-labelledby={triggerId}
+                        aria-hidden={!isExpanded}
                         className={`overflow-hidden transition-all duration-200 ease-out ${
                           isExpanded ? "max-h-60 opacity-100" : "max-h-0 opacity-0"
                         }`}
@@ -262,6 +289,7 @@ const HushhTechFaqSheet: React.FC<HushhTechFaqSheetProps> = ({
               <span
                 className="material-symbols-outlined text-hushh-blue text-sm"
                 style={{ fontVariationSettings: "'wght' 400" }}
+                aria-hidden
               >
                 support_agent
               </span>
@@ -271,7 +299,7 @@ const HushhTechFaqSheet: React.FC<HushhTechFaqSheetProps> = ({
             </div>
             <a
               href="mailto:support@hushh.ai"
-              className="text-xs font-semibold text-hushh-blue hover:underline"
+              className={`text-xs font-semibold text-hushh-blue hover:underline rounded-sm ${iconButtonFocusClass}`}
             >
               support@hushh.ai
             </a>
