@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box } from "@chakra-ui/react";
 import { Helmet } from "react-helmet";
 import { useAIPoweredBerkshireLogic } from "./logic";
@@ -6,6 +6,17 @@ import { useAIPoweredBerkshireLogic } from "./logic";
 const AIPoweredBerkshirePage = () => {
   const { pageTitle, pageDescription, iframeSrc, iframeTitle } = useAIPoweredBerkshireLogic();
   const [iframeLoaded, setIframeLoaded] = useState(false);
+
+  useEffect(() => {
+    if (iframeLoaded) return undefined;
+
+    // Do not trap users behind the overlay if the third-party iframe never fires load.
+    const timeoutId = window.setTimeout(() => {
+      setIframeLoaded(true);
+    }, 8000);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [iframeLoaded]);
 
   return (
     <>
