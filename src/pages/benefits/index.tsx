@@ -18,7 +18,10 @@ const BenefitsPage: React.FC = () => {
       data-page="benefits"
       className="bg-white antialiased text-gray-900 selection:bg-hushh-blue selection:text-white"
     >
-      <main className="mx-auto w-full max-w-7xl px-4 pt-4 pb-12 sm:px-6 lg:px-8">
+      <main
+        id="main-content"
+        className="mx-auto w-full max-w-7xl px-4 pt-4 pb-12 sm:px-6 lg:px-8"
+      >
         {/* Hero — compact; same copy as before */}
         <header className="mx-auto max-w-3xl py-6 text-center sm:py-8 md:py-10">
           <h1
