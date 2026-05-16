@@ -191,22 +191,36 @@ const FundA = () => {
   const alphaBreakdownRows = alphaStackRows.filter((row) => !row.isTotalRow);
   const targetNetIrrRow = alphaStackRows.find((row) => row.isTotalRow);
 
-  const getProgressWidth = (value: string): number => {
+  const ALPHA_PROGRESS_MAX = 23;
+
+  const getProgressMetrics = (
+    value: string
+  ): { width: number; min: number; max: number; now: number } => {
     const rangeMatch = value.match(/(\d+)\s*-\s*(\d+)/);
     if (rangeMatch) {
-      const min = Number(rangeMatch[1]);
-      const max = Number(rangeMatch[2]);
-      const midpoint = (min + max) / 2;
-      return Math.min((midpoint / 23) * 100, 100);
+      const rangeMin = Number(rangeMatch[1]);
+      const rangeMax = Number(rangeMatch[2]);
+      const midpoint = (rangeMin + rangeMax) / 2;
+      return {
+        width: Math.min((midpoint / ALPHA_PROGRESS_MAX) * 100, 100),
+        min: 0,
+        max: ALPHA_PROGRESS_MAX,
+        now: midpoint,
+      };
     }
 
     const singleMatch = value.match(/(\d+(\.\d+)?)/);
     if (!singleMatch) {
-      return 0;
+      return { width: 0, min: 0, max: ALPHA_PROGRESS_MAX, now: 0 };
     }
 
     const numericValue = Number(singleMatch[1]);
-    return Math.min((numericValue / 23) * 100, 100);
+    return {
+      width: Math.min((numericValue / ALPHA_PROGRESS_MAX) * 100, 100),
+      min: 0,
+      max: ALPHA_PROGRESS_MAX,
+      now: numericValue,
+    };
   };
 
   return (
@@ -394,7 +408,9 @@ const FundA = () => {
             <button
               type="button"
               onClick={() => setIsAlphaBreakdownOpen((prev) => !prev)}
-              className="group relative overflow-hidden w-full text-left flex items-center justify-between bg-ios-dark text-white rounded-2xl px-6 py-4 transition-colors duration-700"
+              aria-expanded={isAlphaBreakdownOpen}
+              aria-controls="alpha-breakdown-panel"
+              className="group relative overflow-hidden w-full text-left flex items-center justify-between bg-ios-dark text-white rounded-2xl px-6 py-4 transition-colors duration-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-hushh-blue focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             >
               <div className="absolute inset-0 bg-ios-gray-bg/90 opacity-0 transition-opacity duration-700 ease-out group-hover:opacity-100" />
               <span className="relative z-10 text-sm font-semibold text-white group-hover:text-gray-700 transition-colors duration-700">
@@ -407,7 +423,10 @@ const FundA = () => {
                 >
                   {targetNetIrrRow.value}
                 </span>
-                <span className="material-symbols-outlined !text-[1.15rem] text-hushh-blue">
+                <span
+                  aria-hidden="true"
+                  className="material-symbols-outlined !text-[1.15rem] text-hushh-blue"
+                >
                   {isAlphaBreakdownOpen ? "expand_less" : "expand_more"}
                 </span>
               </div>
@@ -415,21 +434,42 @@ const FundA = () => {
           )}
 
           {isAlphaBreakdownOpen && (
-            <div className="grid grid-cols-4 gap-4 mt-4">
-              {alphaBreakdownRows.map((row) => (
+            <div
+              id="alpha-breakdown-panel"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4"
+            >
+              {alphaBreakdownRows.map((row) => {
+                const progress = getProgressMetrics(row.value);
+                const labelId = `alpha-breakdown-${row.label.replace(/\s+/g, "-").toLowerCase()}-label`;
+
+                return (
                 <div
                   key={row.label}
                   className="group border border-gray-200 rounded-2xl p-4 bg-gradient-to-b from-white to-gray-50/60 hover:border-hushh-blue/25 transition-all"
                 >
-                  <p className="text-[11px] font-medium text-black leading-snug mb-3 min-h-[34px]">
+                  <p
+                    id={labelId}
+                    className="text-[11px] font-medium text-black leading-snug mb-3 min-h-[34px]"
+                  >
                     {row.label}
                   </p>
-                  <div className="w-full h-2.5 rounded-full bg-gray-200/80 overflow-hidden mb-2 shadow-inner">
+                  <div
+                    role="progressbar"
+                    aria-labelledby={labelId}
+                    aria-valuemin={progress.min}
+                    aria-valuemax={progress.max}
+                    aria-valuenow={progress.now}
+                    aria-valuetext={row.value}
+                    className="w-full h-2.5 rounded-full bg-gray-200/80 overflow-hidden mb-2 shadow-inner"
+                  >
                     <div
                       className="relative h-full rounded-full bg-gradient-to-r from-hushh-blue to-hushh-blue/70 transition-all duration-700"
-                      style={{ width: `${getProgressWidth(row.value)}%` }}
+                      style={{ width: `${progress.width}%` }}
                     >
-                      <span className="absolute inset-0 opacity-60 bg-[linear-gradient(110deg,rgba(255,255,255,0)_0%,rgba(255,255,255,0.55)_45%,rgba(255,255,255,0)_70%)] animate-[pulse_2.4s_ease-in-out_infinite]" />
+                      <span
+                        aria-hidden="true"
+                        className="absolute inset-0 opacity-60 bg-[linear-gradient(110deg,rgba(255,255,255,0)_0%,rgba(255,255,255,0.55)_45%,rgba(255,255,255,0)_70%)] animate-[pulse_2.4s_ease-in-out_infinite]"
+                      />
                     </div>
                   </div>
                   <div className="flex items-center justify-between">
@@ -441,7 +481,8 @@ const FundA = () => {
                     </p>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
