@@ -3,6 +3,13 @@ import img from "../../files/img.png";
 import img2 from "../../files/img (1).png";
 import { Box, Container, Heading, Text, SimpleGrid, Flex, Image } from "@chakra-ui/react";
 
+const ctaFocusVisible = {
+  _focusVisible: {
+    outline: "none",
+    boxShadow: "0 0 0 3px rgba(0, 169, 224, 0.45)",
+  },
+};
+
 export default function Leadership() {
   return (
     <Box bg="white">
@@ -395,6 +402,9 @@ export default function Leadership() {
             <Box 
               as={Link}
               to="/contact"
+              display="inline-flex"
+              alignItems="center"
+              justifyContent="center"
               background={'linear-gradient(to right, #00A9E0, #6DD3EF)'}
               color="white"
               
@@ -403,6 +413,8 @@ export default function Leadership() {
               px={{md:16,base:4}}
               py={2}
               className="bg-[#0891B2] hover:bg-[#4BC0C8] inline-block"
+              _hover={{ textDecoration: "none", opacity: 0.95 }}
+              {...ctaFocusVisible}
             >
               Contact Us
             </Box>
@@ -410,6 +422,9 @@ export default function Leadership() {
             <Box 
               as={Link}
               to="/signUp"
+              display="inline-flex"
+              alignItems="center"
+              justifyContent="center"
               bg="transparent"
               color="#0891B2"
               py={2}
@@ -418,6 +433,8 @@ export default function Leadership() {
               fontWeight="medium"
               border="1px solid #0891B2"
               className="inline-block"
+              _hover={{ textDecoration: "none", bg: "rgba(8, 145, 178, 0.06)" }}
+              {...ctaFocusVisible}
             >
               Sign Up Now
             </Box>
